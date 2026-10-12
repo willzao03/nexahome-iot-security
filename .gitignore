@@ -1,0 +1,24 @@
+# Firmware binário (4MB — muito grande para Git)
+firmware/*.bin
+
+# Arquivos temporários Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Ambiente virtual
+venv/
+env/
+
+# Arquivos de sistema Windows
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log

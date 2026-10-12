@@ -1,0 +1,17 @@
+# NexaSense - Payloads MQTT capturados (simulacao)
+# Data   : 2026-10-11 18:49:16
+# Broker : localhost:1883 (sem TLS -- achado F03)
+# Topico : /nexasense/device001/telemetry
+# User   : nexasense_device / Pass: mqttP@ss123 (hardcoded -- F04)
+# Broker aceita conexao anonima (achado F06 -- allow_anonymous)
+
+EVIDENCIA -- todo payload transmitido em TEXTO CLARO:
+
+#001 [18:49:13]  {"device_id": "device001", "temp": 24.6, "hum": 62.5, "ts": 1791755353}
+#002 [18:49:13]  {"device_id": "device001", "temp": 24.6, "hum": 62.4, "ts": 1791755383}
+#003 [18:49:13]  {"device_id": "device001", "temp": 24.6, "hum": 62.2, "ts": 1791755413}
+#004 [18:49:13]  {"device_id": "device001", "temp": 24.7, "hum": 62.6, "ts": 1791755443}
+#005 [18:49:13]  {"device_id": "device001", "temp": 25.0, "hum": 62.8, "ts": 1791755473}
+#006 [18:49:14]  {"device_id": "device001", "temp": 24.9, "hum": 62.5, "ts": 1791755503}
+#007 [18:49:14]  {"device_id": "device001", "temp": 25.1, "hum": 62.8, "ts": 1791755533}
+#008 [18:49:14]  {"device_id": "device001", "temp": 25.4, "hum": 62.5, "ts": 1791755563}

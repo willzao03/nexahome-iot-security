@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório Técnico — NexaSense IoT Security</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Arial,sans-serif; font-size:12px; color:#222; background:#fff; }
+
+/* ── WRAPPER GERAL ── */
+.doc { max-width:800px; margin:0 auto; }
+
+/* ── CAPA ── */
+.capa { background:#1e2d45; color:#fff; padding:32px 40px 28px; }
+.capa .topo-inst { font-size:9px; font-weight:bold; letter-spacing:1px; text-transform:uppercase; color:#fff; }
+.capa .topo-curso { font-size:10px; color:#8ab0cc; margin-top:2px; }
+.capa .titulo { font-size:24px; font-weight:bold; color:#fff; margin-top:28px; line-height:1.25; }
+.capa .subtitulo { font-size:12px; color:#8ab0cc; margin-top:8px; }
+.capa .linha { height:2px; background:#2e7dc0; margin-top:20px; }
+.capa table { width:100%; border-collapse:collapse; margin-top:18px; }
+.capa table td { padding:7px 0; border-bottom:1px solid #2a3f5a; font-size:11px; }
+.capa table td:first-child { width:140px; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:#6a90ae; }
+.capa table td:last-child { font-weight:bold; color:#fff; }
+.capa .data { font-size:10px; color:#6a90ae; margin-top:18px; }
+
+/* ── SEÇÕES ── */
+.sec { max-width:800px; margin:0 auto; padding:20px 40px; }
+.sec-header { display:flex; justify-content:space-between; font-size:9px; color:#999; border-bottom:1px solid #ddd; padding-bottom:4px; margin-bottom:16px; }
+
+h1 { font-size:15px; font-weight:bold; color:#1e2d45; margin:20px 0 8px; }
+h2 { font-size:12px; font-weight:bold; color:#2e7dc0; margin:14px 0 5px; }
+p  { font-size:11px; line-height:1.6; margin-bottom:7px; color:#333; }
+ul,ol { padding-left:18px; margin-bottom:8px; }
+li { font-size:11px; line-height:1.7; color:#333; }
+
+/* ── SUMÁRIO ── */
+.sm { display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px dotted #ddd; font-size:11px; }
+
+/* ── RISK BOXES ── */
+.rboxes { display:flex; margin:12px 0; }
+.rbox { flex:1; padding:10px; text-align:center; }
+.rbox .n { font-size:28px; font-weight:bold; line-height:1; }
+.rbox .l { font-size:9px; font-weight:bold; letter-spacing:1px; margin-top:2px; }
+.rbox .s { font-size:10px; color:#666; }
+.ra { background:#fdf2f2; } .ra .n,.ra .l { color:#c0392b; }
+.rm { background:#fef9e7; } .rm .n,.rm .l { color:#d35400; }
+.rb { background:#eafaf1; } .rb .n,.rb .l { color:#27ae60; }
+
+/* ── TABELAS ── */
+table { width:100%; border-collapse:collapse; margin:8px 0; font-size:11px; }
+th { background:#1e2d45; color:#fff; padding:6px 8px; text-align:left; font-size:10px; }
+td { padding:5px 8px; border-bottom:1px solid #e8edf2; vertical-align:top; font-size:11px; }
+tr:nth-child(even) td { background:#f6f9fc; }
+.capa table th, .capa table td { background:transparent; border:none; }
+
+/* ── BADGES ── */
+.alto  { color:#c0392b; font-weight:bold; }
+.medio { color:#d35400; font-weight:bold; }
+.baixo { color:#27ae60; font-weight:bold; }
+.x    { color:#c0392b; font-weight:bold; }
+
+/* ── BLOCOS ── */
+.bv { background:#fdf2f2; border-left:3px solid #c0392b; padding:7px 10px; margin:8px 0; font-size:10px; color:#7b241c; border-radius:2px; }
+.ba { background:#eaf4fb; border-left:3px solid #2e7dc0; padding:7px 10px; margin:8px 0; font-size:10px; color:#1a5276; border-radius:2px; }
+
+/* ── TERMINAL ── */
+pre { background:#1e2d3d; color:#dde8f0; padding:8px 10px; border-radius:3px; font-size:10px; line-height:1.5; margin:7px 0; font-family:'Consolas','Courier New',monospace; overflow-x:auto; }
+code { background:#eef2f7; color:#c0392b; padding:1px 4px; border-radius:2px; font-size:10px; font-family:'Consolas',monospace; }
+pre code { background:none; color:#dde8f0; padding:0; }
+
+/* ── FIGURAS ── */
+.fig { margin:10px 0; }
+.fig img { width:100%; max-height:260px; object-fit:contain; border:1px solid #ccc; border-radius:3px; }
+.fig figcaption { font-size:9px; color:#666; text-align:center; font-style:italic; margin-top:3px; }
+
+/* ── RODAPÉ ── */
+.rodape { margin-top:30px; padding-top:10px; border-top:1px solid #ddd; font-size:9px; color:#aaa; text-align:center; }
+
+@media print {
+  .pb { page-break-before:always; }
+}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<!-- CAPA -->
+<div class="capa">
+  <div class="topo-inst">UniFeCAF — Centro Universitário</div>
+  <div class="topo-curso">Ciência da Computação</div>
+  <div class="titulo">Do Protótipo ao Produto Seguro:<br>Avaliação de Segurança de um Dispositivo IoT</div>
+  <div class="subtitulo">Relatório Técnico — Hardware Hacking IoT</div>
+  <div class="linha"></div>
+  <table>
+    <tr><td>Aluno</td><td>Wiilian Gabriel da Costa</td></tr>
+    <tr><td>RA</td><td>102155</td></tr>
+    <tr><td>Curso</td><td>Ciência da Computação</td></tr>
+    <tr><td>Disciplina</td><td>Hardware Hacking IoT</td></tr>
+    <tr><td>Produto avaliado</td><td>NexaSense v0.9.1 (ESP32)</td></tr>
+    <tr><td>Instituição</td><td>UniFeCAF</td></tr>
+  </table>
+  <div class="data">30 de setembro de 2026</div>
+</div>
+
+<!-- SUMÁRIO -->
+<div class="sec pb">
+  <div class="sec-header"><span>NexaSense v0.9.1 — Avaliação de Segurança IoT</span><span>Hardware Hacking IoT</span></div>
+  <h1>Sumário</h1>
+  <div class="sm"><span>1. Sumário Executivo</span><span>2</span></div>
+  <div class="sm"><span>2. Descrição do Dispositivo Analisado</span><span>2</span></div>
+  <div class="sm"><span>3. Diagrama Simplificado da Arquitetura</span><span>3</span></div>
+  <div class="sm"><span>4. Mapa da Superfície de Ataque</span><span>3</span></div>
+  <div class="sm"><span>5. Metodologia Utilizada</span><span>4</span></div>
+  <div class="sm"><span>6. Análise do Firmware</span><span>5</span></div>
+  <div class="sm"><span>7. Análise das Interfaces Físicas</span><span>6</span></div>
+  <div class="sm"><span>8. Análise das Comunicações</span><span>7</span></div>
+  <div class="sm"><span>9. Riscos Identificados e Classificação</span><span>8</span></div>
+  <div class="sm"><span>10. Relação dos Achados com Referências de Segurança</span><span>8</span></div>
+  <div class="sm"><span>11. Recomendações de Mitigação</span><span>9</span></div>
+  <div class="sm"><span>12. Proposta de Hardening para Versão Comercial</span><span>10</span></div>
+  <div class="sm"><span>13. Exemplos Reais Pesquisados</span><span>10</span></div>
+  <div class="sm"><span>14. Conclusão</span><span>11</span></div>
+  <div class="sm"><span>15. Referências</span><span>11</span></div>
+</div>
+
+<!-- 1. SUMÁRIO EXECUTIVO + 2. DISPOSITIVO -->
+<div class="sec pb">
+  <div class="sec-header"><span>NexaSense v0.9.1 — Avaliação de Segurança IoT</span><span>Hardware Hacking IoT</span></div>
+  <h1>1. Sumário Executivo</h1>
+  <p>O <strong>NexaSense</strong> é um dispositivo IoT baseado em ESP32 para monitoramento de temperatura e umidade em ambientes residenciais e comerciais. A avaliação técnica do protótipo (firmware v0.9.1) identificou <strong>10 achados de segurança</strong>: 7 de risco alto, 2 de risco médio e 1 de risco baixo. Os 7 achados de risco alto são bloqueadores para qualquer implantação comercial.</p>
+  <div class="rboxes">
+    <div class="rbox ra"><div class="n">7</div><div class="l">RISCO ALTO</div><div class="s">achados</div></div>
+    <div class="rbox rm"><div class="n">2</div><div class="l">RISCO MÉDIO</div><div class="s">achados</div></div>
+    <div class="rbox rb"><div class="n">1</div><div class="l">RISCO BAIXO</div><div class="s">achado</div></div>
+  </div>
+  <p><strong>Principais conclusões</strong></p>
+  <ul>
+    <li><strong>Credenciais expostas em quatro pontos:</strong> log da UART, memória flash, partição NVS e strings do binário.</li>
+    <li><strong>Canal MQTT sem qualquer proteção:</strong> sem TLS, sem autenticação e sem ACL — permite escuta e injeção de comandos.</li>
+    <li><strong>Atualização OTA sem assinatura:</strong> permite entrega de firmware malicioso por atacante na rede.</li>
+    <li><strong>O ESP32 já oferece os mecanismos necessários</strong> (Flash Encryption, Secure Boot v2, NVS Encryption, eFuses).</li>
+  </ul>
+  <div class="bv"><strong>Nenhuma dessas condições exige exploração sofisticada.</strong> Todas foram demonstradas com ferramentas acessíveis em ambiente simulado em Python, sem hardware físico.</div>
+
+  <h1>2. Descrição do Dispositivo Analisado</h1>
+  <table>
+    <tr><th>Componente</th><th>Especificação</th></tr>
+    <tr><td>Microcontrolador</td><td>ESP32-WROOM-32D (Xtensa LX6 dual-core, 240 MHz)</td></tr>
+    <tr><td>Memória flash</td><td>W25Q32 — 4 MB, flash SPI externa</td></tr>
+    <tr><td>Sensor</td><td>DHT22 (temperatura e umidade), GPIO</td></tr>
+    <tr><td>Conectividade</td><td>Wi-Fi 802.11 b/g/n, 2,4 GHz</td></tr>
+    <tr><td>Interfaces físicas</td><td>UART0, JTAG (GPIO 12–15), SPI, I²C, USB micro</td></tr>
+    <tr><td>Firmware</td><td>ESP-IDF v5.1.2 — build educacional</td></tr>
+    <tr><td>Protocolo de rede</td><td>MQTT 3.1.1 — porta 1883 <span class="alto">SEM TLS</span></td></tr>
+    <tr><td>Atualização (OTA)</td><td>HTTP <span class="alto">SEM assinatura</span></td></tr>
+  </table>
+</div>
+
+<!-- 3 + 4 -->
+<div class="sec pb">
+  <div class="sec-header"><span>NexaSense v0.9.1 — Avaliação de Segurança IoT</span><span>Hardware Hacking IoT</span></div>
+  <h1>3. Diagrama Simplificado da Arquitetura</h1>
+  <pre>
+        DHT22 — sensor de temperatura e umidade
+               │ 1-Wire (GPIO)
+               ▼
+  ┌─────────────────────────────────────────────┐
+  │          ESP32-WROOM-32D                    │
+  │  Firmware      Flash SPI   UART0    JTAG    │
+  │  ESP-IDF v5.1  W25Q32 4MB  log+creds GPIO12-15│
+  │  sem SecureBoot sem cripto  exposta  habilitado│
+  └──────────────────────┬──────────────────────┘
+                         │ Wi-Fi
+              ┌──────────┴──────────┐
+              ▼                     ▼
+   Broker MQTT (Mosquitto)    Servidor OTA
+   :1883 sem TLS · anônimo    HTTP :8080 sem assinatura
+              │
+              ▼
+   Plataforma de monitoramento</pre>
+  <p style="font-size:9px;color:#666;font-style:italic">Figura 1 — Arquitetura do NexaSense. Componentes em vermelho não possuem proteção adequada.</p>
+
+  <h1>4. Mapa da Superfície de Ataque</h1>
+  <table>
+    <tr><th>Superfície</th><th>Vetor</th><th>Achado</th><th>Risco</th></tr>
+    <tr><td>Física</td><td>UART0 — log com credenciais; download sem autenticação</td><td>F01</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>Física</td><td>SPI flash — dump direto via programador</td><td>F02</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>Física</td><td>JTAG — depuração e dump de RAM</td><td>F07</td><td><span class="medio">Médio</span></td></tr>
+    <tr><td>Firmware</td><td>Credenciais Wi-Fi e MQTT hardcoded</td><td>F04</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>Firmware</td><td>NVS não criptografada</td><td>F09</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>Firmware</td><td>Versão de desenvolvimento exposta</td><td>F10</td><td><span class="baixo">Baixo</span></td></tr>
+    <tr><td>Rede</td><td>MQTT sem TLS — tráfego em texto claro</td><td>F03</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>Rede</td><td>Broker sem autenticação e sem ACL</td><td>F06</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>Rede</td><td>OTA via HTTP sem verificação de assinatura</td><td>F05</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>Rede</td><td>Device ID estático e enumerável</td><td>F08</td><td><span class="medio">Médio</span></td></tr>
+  </table>
+</div>
+
+<!-- 5. METODOLOGIA -->
+<div class="sec pb">
+  <div class="sec-header"><span>NexaSense v0.9.1 — Avaliação de Segurança IoT</span><span>Hardware Hacking IoT</span></div>
+  <h1>5. Metodologia Utilizada</h1>
+  <p>A avaliação seguiu a estrutura do <strong>OWASP IoT Security Testing Guide (ISTG)</strong>, em 8 etapas:</p>
+  <table>
+    <tr><th>#</th><th>Etapa</th><th>Ferramentas</th></tr>
+    <tr><td>1</td><td>Reconhecimento do dispositivo</td><td>Inspeção visual, datasheets</td></tr>
+    <tr><td>2</td><td>Preservação e identificação do firmware</td><td>esptool.py, sha256sum, Python hashlib</td></tr>
+    <tr><td>3</td><td>Análise estática do firmware</td><td>binwalk, strings, Python re/struct</td></tr>
+    <tr><td>4</td><td>Análise das interfaces físicas</td><td>screen, minicom, simulação UART</td></tr>
+    <tr><td>5</td><td>Análise das comunicações de rede</td><td>Wireshark, tcpdump, Mosquitto</td></tr>
+    <tr><td>6</td><td>Demonstração controlada</td><td>paho-mqtt, mosquitto_pub/sub</td></tr>
+    <tr><td>7</td><td>Mapeamento e classificação de riscos</td><td>Matriz Impacto × Probabilidade</td></tr>
+    <tr><td>8</td><td>Plano de hardening</td><td>ESP-IDF Security Docs, ETSI EN 303 645</td></tr>
+  </table>
+  <div class="ba"><strong>Ambiente simulado.</strong> Como não havia hardware físico disponível, o ambiente foi reproduzido em Python com os scripts <code>04_firmware_generator.py</code>, <code>05_firmware_analysis.py</code>, <code>01_uart_boot_simulation.py</code> e <code>run_mqtt_evidence.py</code>, usando o broker Mosquitto local.</div>
+
+  <h2>5.1 Critério de classificação de risco</h2>
+  <table>
+    <tr><th>Impacto \ Probabilidade</th><th>Baixa</th><th>Média</th><th>Alta</th></tr>
+    <tr><td><strong>Alto</strong></td><td><span class="medio">Médio</span></td><td><span class="alto">Alto</span></td><td><span class="alto">Alto</span></td></tr>
+    <tr><td><strong>Médio</strong></td><td><span class="baixo">Baixo</span></td><td><span class="medio">Médio</span></td><td><span class="medio">Médio</span></td></tr>
+    <tr><td><strong>Baixo</strong></td><td><span class="baixo">Baixo</span></td><td><span class="baixo">Baixo</span></td><td><span class="baixo">Baixo</span></td></tr>
+  </table>
+
+  <h2>5.2 Limitações</h2>
+  <p>Os achados de interfaces físicas (UART, JTAG, flash SPI) foram modelados em simulação e ainda não foram validados em placa real. As evidências de rede foram geradas contra um broker local de laboratório, isolado.</p>
+</div>
+
+<!-- 6. FIRMWARE -->
+<div class="sec pb">
+  <div class="sec-header"><span>NexaSense v0.9.1 — Avaliação de Segurança IoT</span><span>Hardware Hacking IoT</span></div>
+  <h1>6. Análise do Firmware</h1>
+
+  <h2>6.1 Preservação e integridade</h2>
+  <table>
+    <tr><th>Campo</th><th>Valor</th></tr>
+    <tr><td>Arquivo</td><td>nexasense_firmware_original.bin</td></tr>
+    <tr><td>Tamanho</td><td>4.194.304 bytes (4 MB)</td></tr>
+    <tr><td>SHA-256</td><td><code>6ae51accefe393edb3a0781dadc7f9b196290ba68244cf38c7e7022497d26496</code></td></tr>
+    <tr><td>Data</td><td>2026-09-30 — Gerado via script educacional</td></tr>
+  </table>
+
+  <h2>6.2 Execução — geração e análise do firmware</h2>
+  <figure class="fig">
+    <img src="hardware/evidence/print-firmware-generator.png" alt="Firmware generator">
+    <figcaption>Figura 2 — 04_firmware_generator.py e 05_firmware_analysis.py: geração do binário, SHA-256, partições identificadas e NVS com credenciais em texto claro (F02, F09).</figcaption>
+  </figure>
+
+  <h2>6.3 Estrutura identificada (binwalk)</h2>
+  <pre>0x000000  ESP32 Bootloader (magic 0xE9)
+0x008000  Partition Table (magic 0xAA50) — 5 entradas
+0x009000  NVS Partition  ← credenciais em TEXTO CLARO  (F09)
+0x010000  App Image      ← strings sensíveis embutidas (F01, F04)
+0x130000  OTA Partition  ← HTTP sem assinatura          (F05)</pre>
+
+  <h2>6.4 Informações sensíveis encontradas (strings)</h2>
+  <table>
+    <tr><th>String encontrada</th><th>Tipo</th><th>Risco</th></tr>
+    <tr><td><code>NEXAHOME_WIFI_SSID / WIFI_PASS</code></td><td>Credencial hardcoded</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td><code>mqtt://192.168.1.10:1883</code></td><td>Endpoint sem TLS</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td><code>mqtt_user / mqtt_pass</code></td><td>Credencial MQTT</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td><code>http://192.168.1.10:8080/firmware/</code></td><td>OTA via HTTP</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td><code>[NVS] ssid=%s password=%s</code></td><td>Log imprime credenciais</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td><code>device_id=device001</code></td><td>ID estático</td><td><span class="medio">Médio</span></td></tr>
+    <tr><td><code>fw_version=0.9.1-prototype</code></td><td>Versão de desenvolvimento</td><td><span class="baixo">Baixo</span></td></tr>
+  </table>
+  <p style="font-size:9px;color:#666;font-style:italic">Total: 52 strings sensíveis. O firmware não usa Flash Encryption.</p>
+</div>
+
+<!-- 7. HARDWARE -->
+<div class="sec pb">
+  <div class="sec-header"><span>NexaSense v0.9.1 — Avaliação de Segurança IoT</span><span>Hardware Hacking IoT</span></div>
+  <h1>7. Análise das Interfaces Físicas</h1>
+
+  <h2>7.1 UART0</h2>
+  <p>Interface ativa via USB sem proteção. O log de boot imprime credenciais Wi-Fi e MQTT em texto claro — qualquer pessoa com acesso físico por menos de 30 segundos obtém todas elas (F01).</p>
+  <figure class="fig">
+    <img src="hardware/evidence/print-uart-boot.png" alt="UART boot log">
+    <figcaption>Figura 3 — 01_uart_boot_simulation.py: log de boot com SSID, senha Wi-Fi, credenciais MQTT e endpoint OTA visíveis. Achado F01 — Risco Alto.</figcaption>
+  </figure>
+  <pre>[NVS]  ssid=NexaHome_Lab password=[REDACTED]
+[MQTT] Broker URI : mqtt://192.168.1.10:1883
+[MQTT] Username   : [REDACTED] / Password: [REDACTED]
+[OTA]  http://192.168.1.10:8080/firmware/nexasense_latest.bin</pre>
+
+  <h2>7.2 JTAG (GPIO 12–15)</h2>
+  <p>Pinos acessíveis, eFuse <code>JTAG_DISABLE</code> não programado. Com adaptador FTDI e OpenOCD é possível fazer dump da RAM em execução, expondo credenciais carregadas da NVS (F07). Impacto classificado como médio pois as mesmas credenciais já são obtidas por vias mais simples (F01, F02).</p>
+
+  <h2>7.3 Flash SPI (W25Q32)</h2>
+  <p>Chip acessível fisicamente. Sem Flash Encryption, o conteúdo é extraível com programador SPI, contornando qualquer proteção de software (F02).</p>
+</div>
+
+<!-- 8. COMUNICAÇÕES -->
+<div class="sec pb">
+  <div class="sec-header"><span>NexaSense v0.9.1 — Avaliação de Segurança IoT</span><span>Hardware Hacking IoT</span></div>
+  <h1>8. Análise das Comunicações</h1>
+
+  <h2>8.1 Protocolo identificado</h2>
+  <p>MQTT 3.1.1 sobre TCP na porta <strong>1883</strong> (texto claro). Broker Mosquitto com <code>allow_anonymous true</code>, sem ACL e sem TLS.</p>
+
+  <h2>8.2 Autenticação, confidencialidade e integridade</h2>
+  <table>
+    <tr><th>Propriedade</th><th>Status</th><th>Observação</th></tr>
+    <tr><td>Criptografia de transporte</td><td><span class="x">✗ Ausente</span></td><td>Porta 1883 em texto claro</td></tr>
+    <tr><td>Autenticação do cliente</td><td><span class="x">✗ Ausente</span></td><td>Broker aceita conexões anônimas</td></tr>
+    <tr><td>Controle de acesso (ACL)</td><td><span class="x">✗ Ausente</span></td><td>Qualquer cliente publica e assina</td></tr>
+    <tr><td>Autenticação de mensagens</td><td><span class="x">✗ Ausente</span></td><td>Sem HMAC no payload</td></tr>
+    <tr><td>Proteção contra replay</td><td><span class="x">✗ Ausente</span></td><td>Mensagens podem ser reenviadas</td></tr>
+  </table>
+
+  <h2>8.3 Credenciais MQTT em texto claro</h2>
+  <figure class="fig">
+    <img src="hardware/evidence/print-mqtt-credenciais.png" alt="Credenciais MQTT">
+    <figcaption>Figura 4 — Credenciais MQTT (nexasense_device / mqttP@ss123) transmitidas sem criptografia. Achados F03 e F04 — Risco Alto.</figcaption>
+  </figure>
+
+  <h2>8.4 Demonstração — telemetria e injeção de comandos</h2>
+  <figure class="fig">
+    <img src="network/evidence/print-mqtt-evidence.png" alt="MQTT evidence">
+    <figcaption>Figura 5 — run_mqtt_evidence.py: 8 mensagens de telemetria sem TLS (F03) e 3 comandos injetados sem autenticação — reboot, DoS, OTA malicioso (F06). Risco Alto.</figcaption>
+  </figure>
+  <pre>{"device_id": "device001", "temp": 24.5, "hum": 62.3, "ts": 1791752354}</pre>
+</div>
+
+<!-- 9 + 10 -->
+<div class="sec pb">
+  <div class="sec-header"><span>NexaSense v0.9.1 — Avaliação de Segurança IoT</span><span>Hardware Hacking IoT</span></div>
+  <h1>9. Riscos Identificados e Classificação</h1>
+  <table>
+    <tr><th>ID</th><th>Achado</th><th>Impacto</th><th>Prob.</th><th>Risco</th></tr>
+    <tr><td>F01</td><td>UART exposta — log com credenciais no boot</td><td><span class="alto">Alto</span></td><td>Alta</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>F02</td><td>Flash sem criptografia — firmware extraível</td><td><span class="alto">Alto</span></td><td>Alta</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>F03</td><td>MQTT sem TLS — porta 1883 em texto claro</td><td><span class="alto">Alto</span></td><td>Alta</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>F04</td><td>Credenciais Wi-Fi e MQTT hardcoded</td><td><span class="alto">Alto</span></td><td>Alta</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>F05</td><td>OTA via HTTP sem verificação de assinatura</td><td><span class="alto">Alto</span></td><td>Média</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>F06</td><td>Broker MQTT sem autenticação e sem ACL</td><td><span class="alto">Alto</span></td><td>Alta</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>F07</td><td>JTAG habilitado e pinos acessíveis</td><td><span class="medio">Médio</span></td><td>Média</td><td><span class="medio">Médio</span></td></tr>
+    <tr><td>F08</td><td>Device ID estático e enumerável</td><td><span class="medio">Médio</span></td><td>Alta</td><td><span class="medio">Médio</span></td></tr>
+    <tr><td>F09</td><td>NVS não criptografada</td><td><span class="alto">Alto</span></td><td>Alta</td><td><span class="alto">Alto</span></td></tr>
+    <tr><td>F10</td><td>Versão "prototype" exposta</td><td><span class="baixo">Baixo</span></td><td>Alta</td><td><span class="baixo">Baixo</span></td></tr>
+  </table>
+
+  <h1>10. Relação dos Achados com Referências de Segurança</h1>
+  <table>
+    <tr><th>Referência</th><th>Achados</th><th>Como foi utilizada</th></tr>
+    <tr><td><strong>OWASP ISTG</strong></td><td>F01–F03, F05–F07</td><td>Estrutura das 8 etapas de avaliação</td></tr>
+    <tr><td><strong>NIST IR 8259A</strong></td><td>F02, F04, F05, F08, F09</td><td>Comparar capacidades com baseline seguro</td></tr>
+    <tr><td><strong>ETSI EN 303 645</strong></td><td>F03, F04, F05, F06, F09</td><td>Fundamentar recomendações de hardening</td></tr>
+    <tr><td><strong>MITRE EMB3D</strong></td><td>F01, F02, F05, F07</td><td>Mapear ameaças catalogadas ao dispositivo</td></tr>
+    <tr><td><strong>Espressif ESP-IDF</strong></td><td>F02, F05, F07</td><td>Propor medidas técnicas nativas do ESP32</td></tr>
+  </table>
+  <h2>Mapeamento ETSI EN 303 645</h2>
+  <table>
+    <tr><th>Disposição</th><th>Requisito</th><th>Achados</th></tr>
+    <tr><td>5.1</td><td>Sem senhas padrão universais</td><td>F04</td></tr>
+    <tr><td>5.3</td><td>Manter o software atualizado</td><td>F05</td></tr>
+    <tr><td>5.4</td><td>Armazenar parâmetros sensíveis com segurança</td><td>F01, F02, F04, F09</td></tr>
+    <tr><td>5.5</td><td>Comunicar-se com segurança</td><td>F03, F06</td></tr>
+    <tr><td>5.6</td><td>Minimizar superfícies de ataque</td><td>F01, F07</td></tr>
+    <tr><td>5.7</td><td>Garantir integridade do software</td><td>F05</td></tr>
+  </table>
+</div>
+
+<!-- 11. MITIGAÇÃO -->
+<div class="sec pb">
+  <div class="sec-header"><span>NexaSense v0.9.1 — Avaliação de Segurança IoT</span><span>Hardware Hacking IoT</span></div>
+  <h1>11. Recomendações de Mitigação</h1>
+  <p><strong>P0</strong> — antes de qualquer piloto. <strong>P1</strong> — antes do lançamento. <strong>P2</strong> — melhorias de robustez.</p>
+  <table>
+    <tr><th>Prior.</th><th>Ação</th><th>Achados</th><th>Como implementar</th></tr>
+    <tr><td>P0</td><td>Remover credenciais do firmware e do log</td><td>F01, F04</td><td>Provisionamento BLE (<code>wifi_provisioning</code>) e remoção de logs com segredos</td></tr>
+    <tr><td>P0</td><td>Proteger o canal MQTT</td><td>F03, F06</td><td><code>mqtts://</code> porta 8883, TLS mútuo, <code>allow_anonymous false</code>, ACL por dispositivo</td></tr>
+    <tr><td>P0</td><td>Proteger a atualização OTA</td><td>F05</td><td><code>esp_https_ota</code> com certificado validado e imagem assinada</td></tr>
+    <tr><td>P1</td><td>Flash Encryption e Secure Boot v2</td><td>F02, F05</td><td>Flash Encryption modo release + Secure Boot v2 RSA-3072</td></tr>
+    <tr><td>P1</td><td>Criptografar a NVS</td><td>F09</td><td>NVS Encryption com chaves protegidas por eFuse HMAC</td></tr>
+    <tr><td>P1</td><td>Desabilitar JTAG e restringir UART</td><td>F01, F07</td><td>eFuse <code>JTAG_DISABLE</code> e restrição do modo download</td></tr>
+    <tr><td>P2</td><td>Autenticar mensagens / impedir replay</td><td>F03</td><td>HMAC no payload com nonce e timestamp</td></tr>
+    <tr><td>P2</td><td>Identificador único por dispositivo</td><td>F08</td><td>UUID derivado do eFuse MAC</td></tr>
+    <tr><td>P2</td><td>Remover rótulo "prototype"</td><td>F10</td><td>Versão de produção sem texto de desenvolvimento</td></tr>
+  </table>
+  <div class="bv"><strong>Atenção:</strong> a programação de eFuses (Flash Encryption, Secure Boot, JTAG_DISABLE) é <strong>irreversível</strong>. Valide todo o fluxo antes de aplicar à linha de produção.</div>
+</div>
+
+<!-- 12 + 13 -->
+<div class="sec pb">
+  <div class="sec-header"><span>NexaSense v0.9.1 — Avaliação de Segurança IoT</span><span>Hardware Hacking IoT</span></div>
+  <h1>12. Proposta de Hardening para Versão Comercial</h1>
+  <table>
+    <tr><th>Aspecto</th><th>Protótipo (atual)</th><th>Versão comercial</th></tr>
+    <tr><td>Firmware em repouso</td><td>Texto claro</td><td>AES-256 — Flash Encryption</td></tr>
+    <tr><td>Autenticidade do firmware</td><td>Sem verificação</td><td>RSA-3072 — Secure Boot v2</td></tr>
+    <tr><td>Comunicação MQTT</td><td>Porta 1883, texto claro</td><td>TLS porta 8883 com certificado</td></tr>
+    <tr><td>Autenticação no broker</td><td>Anônima</td><td>TLS mútuo + ACL por dispositivo</td></tr>
+    <tr><td>Credenciais Wi-Fi</td><td>Hardcoded no binário</td><td>Provisionamento em campo (BLE)</td></tr>
+    <tr><td>Atualização OTA</td><td>HTTP sem assinatura</td><td>HTTPS + imagem assinada</td></tr>
+    <tr><td>Interface UART</td><td>Log com credenciais</td><td>Log mínimo; download restrito via eFuse</td></tr>
+    <tr><td>Interface JTAG</td><td>Ativa e acessível</td><td>Desabilitada via eFuse</td></tr>
+    <tr><td>NVS</td><td>Texto claro</td><td>NVS Encryption habilitada</td></tr>
+    <tr><td>Device ID</td><td>Estático (device001)</td><td>UUID único por dispositivo (eFuse MAC)</td></tr>
+    <tr><td>Logs em produção</td><td>Verbose</td><td>Desabilitados ou nível mínimo</td></tr>
+  </table>
+
+  <h1>13. Exemplos Reais Pesquisados</h1>
+  <h2>Caso 1 — Botnet Mirai (2016)</h2>
+  <p>O malware Mirai infectou câmeras IP e roteadores com credenciais padrão de fábrica, formando uma botnet usada em ataques DDoS de grande volume, incluindo o ataque ao DNS Dyn em outubro de 2016.</p>
+  <p><strong>Paralelo com o NexaSense:</strong> credenciais fixas em toda a linha (F04) transformam uma falha individual em falha em escala. Uma única extração via UART compromete toda a frota.</p>
+
+  <h2>Caso 2 — TP-Link Archer C5v (CVE-2021-27210)</h2>
+  <p>No firmware 1.7_181221, atacantes podiam recuperar credenciais em texto claro via interface de gerenciamento. Classificado como CWE-312 (armazenamento de informação sensível em texto claro).</p>
+  <p><strong>Paralelo com o NexaSense:</strong> armazenamento e transmissão de credenciais em texto claro (F03, F09) dão a um atacante acesso direto à rede interna do cliente.</p>
+  <div class="ba"><strong>Lição para a NexaHome:</strong> um único dispositivo comprometido expõe as credenciais Wi-Fi do cliente. A transição do protótipo para produto comercial exige revisão sistemática de segurança.</div>
+</div>
+
+<!-- 14 + 15 -->
+<div class="sec pb">
+  <div class="sec-header"><span>NexaSense v0.9.1 — Avaliação de Segurança IoT</span><span>Hardware Hacking IoT</span></div>
+  <h1>14. Conclusão</h1>
+  <p>O NexaSense, em seu estado atual, <strong>não está apto para implantação comercial</strong>. Os 7 achados de risco alto representam condições exploráveis com ferramentas acessíveis, sem necessidade de adversários sofisticados.</p>
+  <p>A avaliação demonstrou uma metodologia estruturada que liga evidências técnicas a riscos classificados e recomendações baseadas em normas reconhecidas. O ESP32 oferece os mecanismos necessários e o plano de hardening proposto leva o NexaSense a uma postura adequada para o mercado.</p>
+  <p><strong>Próximos passos:</strong> validar os achados físicos em placa real, executar as ações P0 e P1 e repetir a avaliação sobre a build de produção.</p>
+
+  <h1>15. Referências</h1>
+  <ol>
+    <li>OWASP Foundation. <em>IoT Security Testing Guide (ISTG)</em>. https://owasp.org/www-project-iot-security-testing-guide/</li>
+    <li>NIST. <em>IR 8259A — IoT Device Cybersecurity Capability Core Baseline</em>. 2020.</li>
+    <li>ETSI. <em>EN 303 645 v3.1.3 — Cyber Security for Consumer Internet of Things</em>. Setembro de 2024.</li>
+    <li>MITRE. <em>EMB3D — Embedded Device Threat Model</em>. https://emb3d.mitre.org/</li>
+    <li>Espressif Systems. <em>ESP-IDF Programming Guide — Security</em>. https://docs.espressif.com/projects/esp-idf/en/latest/esp32/security/</li>
+    <li>Antonakakis, M. et al. <em>Understanding the Mirai Botnet</em>. 26th USENIX Security Symposium, 2017.</li>
+    <li>NVD. <em>CVE-2021-27210 (TP-Link Archer C5v)</em>. https://nvd.nist.gov/vuln/detail/CVE-2021-27210</li>
+  </ol>
+
+  <div class="rodape">
+    Wiilian Gabriel da Costa — RA 102155 — Ciência da Computação — Hardware Hacking IoT — UniFeCAF — 2026<br>
+    Credenciais e dados sensíveis identificados durante a avaliação foram redatados neste documento.
+  </div>
+</div>
+
+</div><!-- /doc -->
+</body>
+</html>
