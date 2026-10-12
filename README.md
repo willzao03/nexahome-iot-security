@@ -202,7 +202,7 @@ tcpdump -i eth0 -w nexasense_mqtt.pcapng port 1883
 
 ## 13. Vídeo de Demonstração
 
-> Link: *(a ser inserido após gravação)*  
+> Link: https://youtu.be/l9kXt4JnXpE  
 > Plataforma: YouTube (modo não listado)
 
 ---
